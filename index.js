@@ -1,102 +1,172 @@
-const openButton = document.getElementById('open-sidebar-button')
-const closeButton = document.getElementById('close-sidebar-button')
-const nav = document.getElementById('nav')
-const overlay = document.getElementById('overlay')
-const slideshowImg = document.getElementById('slideshowImg')
-const slideshowDesc = document.getElementById('slideshowDesc')
-const slideshowTitle = document.getElementById("slideshowTitle")
-const dots = document.querySelectorAll('.dot')
+document.addEventListener("DOMContentLoaded", function () {
+  const gallery = document.querySelector(".gallery");
+  const photos = document.querySelectorAll(".photo");
+  const caption = document.querySelector(".caption");
+  const modal = document.querySelector(".modal");
+  const modalImg = document.querySelector(".modal-img");
+  const modalCaption = document.querySelector(".modal-caption");
+  const modalClose = document.querySelector(".modal-close");
 
-const slideshows = ["media/slideshow-1.png","media/slideshow-2.jpg", "media/slideshow-3.jpg", "media/slideshow-4.jpg"]
-const titles = ['Hunian Kontainer Minimalis dari PT. Gaoshi Building Material', 
-                'Pilihan hunian masa kini:', 
-                'Harga lebih terjangkau', 
-                'Bahan bangunan berkualitas']
-const descs = ['Solusi Rumah Modern, Praktis, dan Terjangkau ',
-                'Praktis, Kokoh dan Estetis', 
-                'Lebih hemat dibandingkan bangunan konvensional', 
-                'Beragam macam tersedia']
-                
-const media = window.matchMedia("(max-width: 740px)")
+  // Add the missing sidebar functions
+  window.openSidebar = function() {
+    document.getElementById("nav").classList.add("show");
+    document.getElementById("open-sidebar-button").setAttribute("aria-expanded", "true");
+  };
 
-media.addEventListener('change', (e) => updateNavbar(e))
+  window.closeSidebar = function() {
+    document.getElementById("nav").classList.remove("show");
+    document.getElementById("open-sidebar-button").setAttribute("aria-expanded", "false");
+  };
 
-function updateNavbar(e){
-    const isMobile = e.matches;
-    console.log(isMobile)
-    if(isMobile){
-        nav.setAttribute('inert','')
+  // Slideshow functionality
+  const slides = [
+    {
+      src: "media/slideshow-1.png",
+      title: "Quality Building Materials",
+      desc: "Providing the best construction solutions"
+    },
+    {
+      src: "media/slideshow-2.jpg",
+      title: "Container Homes",
+      desc: "Modern, efficient living spaces"
+    },
+    {
+      src: "media/slideshow-3.jpg",
+      title: "Custom Solutions",
+      desc: "Tailored to your specific needs"
+    },
+    {
+      src: "media/slideshow-4.jpg",
+      title: "Sustainable Options",
+      desc: "Eco-friendly building choices"
     }
-    else{
-        nav.removeAttribute('inert')
-        overlay.style.display = 'none';
-    }
-}
+  ];
 
-function openSidebar(){
-    nav.classList.add('show');
-    openButton.setAttribute('aria-expanded', 'true');
-    overlay.style.display = 'block';
-    if (nav.classList.contains('show')){
-        console.log('block')
-        overlay.style.display = 'block';
-    }
-}
+  let currentSlide = 0;
+  const slideImg = document.getElementById("slideshowImg");
+  const slideTitle = document.getElementById("slideshowTitle");
+  const slideDesc = document.getElementById("slideshowDesc");
+  const dots = document.querySelectorAll(".dot");
 
-function closeSidebar(){
-    nav.classList.remove('show');
-    openButton.setAttribute('aria-expanded', 'false');
-    overlay.style.display = 'none';
-}
-
-openButton.addEventListener('click', openSidebar);
-closeButton.addEventListener('click', closeSidebar);
-overlay.addEventListener('click', closeSidebar);
-updateNavbar(media);
-
-const currentPage = window.location.pathname;
-const links = document.getElementsByTagName('a')
-for (let link of links) {
-    const linkPath = link.getAttribute('href');
-
-    if (currentPage.includes(linkPath)) {
-        link.style.color = "rgb(20, 93, 160)";
-        link.style.borderBottom = "solid 5px black";
-    }
-}
-
-let currentSlide = 0;
-function updateSlideshow(){
-    slideshowImg.classList.remove('visible');
-    slideshowDesc.classList.remove('visible');
-    slideshowTitle.classList.remove('visible');
-    setTimeout(() =>{
-        slideshowImg.src = slideshows[currentSlide];
-        slideshowTitle.textContent = titles[currentSlide];
-        slideshowDesc.textContent = descs[currentSlide];
-
-        slideshowDesc.classList.add('visible');
-        slideshowTitle.classList.add('visible');
-        slideshowImg.classList.add('visible');
-
-        currentSlide = (currentSlide+1) % slideshows.length;
-    }, 1000);
-}
-
-dots.forEach(dot => {
-    dot.addEventListener('click', (event) => {
-        const slideIndex = parseInt(event.target.getAttribute('data-slide'));
-        currentSlide = slideIndex;
-        updateSlideshow();
-        if (currentSlide = slideIndex){
-            dot.classList.add('visible');
-        }else{
-            dot.classList.remove('visible');
-        }
+  function showSlide(index) {
+    // Remove visible class from current elements
+    slideImg.classList.remove("visible");
+    slideTitle.classList.remove("visible");
+    slideDesc.classList.remove("visible");
+    
+    // Update dot indicators
+    dots.forEach((dot, i) => {
+      dot.classList.remove("active");
+      if (i === index) {
+        dot.classList.add("active");
+      }
     });
-});
+    
+    // Set timeout to allow fade out
+    setTimeout(() => {
+      // Update slide content
+      slideImg.src = slides[index].src;
+      slideTitle.textContent = slides[index].title;
+      slideDesc.textContent = slides[index].desc;
+      
+      // Add visible class to fade in
+      slideImg.classList.add("visible");
+      slideTitle.classList.add("visible");
+      slideDesc.classList.add("visible");
+    }, 500);
+  }
 
-window.onload = () => {
-    updateSlideshow();
-    setInterval(updateSlideshow, 7000);
-};
+  // Initialize first slide
+  if (slideImg && slideTitle && slideDesc) {
+    showSlide(0);
+    
+    // Set up dot navigation
+    dots.forEach((dot) => {
+      dot.addEventListener("click", function() {
+        const slideIndex = parseInt(this.getAttribute("data-slide"));
+        currentSlide = slideIndex;
+        showSlide(currentSlide);
+      });
+    });
+    
+    // Auto-rotate slides
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }, 5000);
+  }
+
+  let currentIndex = 0;
+
+  function updateGallery(index) {
+    if (!photos || photos.length === 0) return;
+    
+    photos.forEach((photo, i) => {
+      photo.classList.remove("active");
+      if (i === index) {
+        photo.classList.add("active");
+      }
+    });
+    
+    if (caption) {
+      const activePhoto = photos[index];
+      caption.textContent = activePhoto.dataset.caption || "";
+    }
+    
+    currentIndex = index;
+  }
+
+  if (photos && photos.length > 0) {
+    photos.forEach((photo, index) => {
+      photo.addEventListener("click", function () {
+        updateGallery(index);
+        if (modalImg) modalImg.src = this.src;
+        if (modalCaption) modalCaption.textContent = this.dataset.caption || "";
+        if (modal) modal.classList.add("open");
+      });
+    });
+  }
+
+  if (modalClose) {
+    modalClose.addEventListener("click", function () {
+      if (modal) modal.classList.remove("open");
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        modal.classList.remove("open");
+      }
+    });
+  }
+
+  // Optional: navigate with arrow keys
+  document.addEventListener("keydown", function (e) {
+    if (modal && !modal.classList.contains("open")) return;
+
+    if (photos && photos.length > 0) {
+      if (e.key === "ArrowRight") {
+        currentIndex = (currentIndex + 1) % photos.length;
+        updateGallery(currentIndex);
+        if (modalImg) modalImg.src = photos[currentIndex].src;
+        if (modalCaption) modalCaption.textContent = photos[currentIndex].dataset.caption || "";
+      }
+
+      if (e.key === "ArrowLeft") {
+        currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+        updateGallery(currentIndex);
+        if (modalImg) modalImg.src = photos[currentIndex].src;
+        if (modalCaption) modalCaption.textContent = photos[currentIndex].dataset.caption || "";
+      }
+    }
+
+    if (e.key === "Escape" && modal) {
+      modal.classList.remove("open");
+    }
+  });
+
+  if (photos && photos.length > 0) {
+    updateGallery(currentIndex);
+  }
+});

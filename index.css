@@ -161,14 +161,6 @@ body{
     .end-bar{
         width: 100vw;
     }
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .container-abt {
-        flex: column;
-        align-items: center;
-    }
 }
 
 .slideshow, .slideshowImg{
@@ -241,6 +233,13 @@ body{
     max-height: 55vh;
     height: auto;
     justify-content: center;
+	max-width: 100%;
+    padding: 1rem;
+    #box-sizing: border-box;
+    word-wrap: break-word;
+    #font-family: Arial, sans-serif;
+    #background-color: #f9f9f9;
+    #border-radius: 5px;
 }
 .box-container h4 {
     color: rgb(9, 36, 61);
@@ -331,45 +330,6 @@ body{
     padding: 1vw;
     font-size: 1.2vw;
 }
-.featured-prdct, .stuff {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.featured-prdct img, .stuff img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-.featured-prdct h3, .stuff h3 {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-.featured-prdct p, .stuff p{
-    font-size: 14px;
-    text-align: center;
-
-    word-break: break-word;
-    overflow-wrap: break-word;
-
-    max-height: 100px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-.featured-prdct p::-webkit-scrollbar, .stuff p::-webkit-scrollbar {
-    width: 6px;
-}
-.featured-prdct p::-webkit-scrollbar, .stuff p::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-}
-
 
 /* ------------ */
 .all-products h2 {
@@ -479,4 +439,113 @@ h1{
 }
 .idk{
     margin-top: 40vw;
+}
+/* Add these styles to your index.css file or replace the problematic sections */
+
+/* Fix for mobile navigation */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10000;
+}
+
+@media screen and (max-width: 900px) {
+    /* Improved mobile navigation styling */
+    #open-sidebar-button, 
+    #close-sidebar-button {
+        display: block;
+        cursor: pointer;
+    }
+    
+    .nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 70%;  /* Increased from 40% for better usability */
+        max-width: 300px; /* Add maximum width for larger screens */
+        background-color: white;
+        flex-direction: column;
+        justify-content: flex-start; /* Changed from left to flex-start */
+        padding-top: 6em;
+        z-index: 1000;
+        box-shadow: -4px 4px 8px 0 rgba(0, 0, 0, 0.2), -6px 6px 20px 0 rgba(0, 0, 0, 0.19);
+        transition: right 300ms ease-in-out;
+    }
+    
+    .nav.show {
+        right: 0;
+    }
+    
+    .nav.show ~ #overlay {
+        display: block;
+    }
+    
+    .nav ul {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    
+    .nav a {
+        padding: 1em 2em;
+        width: 100%;
+        display: block;
+        text-align: left;
+    }
+    
+    #close-sidebar-button {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        padding: 0.5em;
+    }
+    
+    .top-bar {
+        padding: 0.5em 1em;
+        height: auto;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .logo {
+        max-height: 40px;
+        width: auto;
+    }
+    
+    /* Fix for overlay */
+    #overlay {
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        display: none;
+    }
+}
+
+/* Additional responsive fixes */
+@media screen and (max-width: 768px) {
+    .houseCNTRboxes {
+        flex-direction: column;
+        gap: 4vh;
+    }
+    
+    .box-container {
+        flex-direction: column;
+        gap: 2vh;
+    }
+    
+    .boxes, .boxes-2 {
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .end-bar {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem 1rem;
+    }
 }
