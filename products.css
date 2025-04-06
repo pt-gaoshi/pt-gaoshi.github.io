@@ -1,0 +1,89 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+/* Container Styling */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Card Styling */
+.featured-prdct,
+.stuff {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Product Image */
+.featured-prdct img,
+.stuff img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Product Title */
+.featured-prdct h3,
+.stuff h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+/* Product Description with scroll */
+.featured-prdct p,
+.stuff p {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+
+    word-break: break-word;
+    overflow-wrap: break-word;
+
+    max-height: 100px; /* Set max height */
+    overflow-y: auto; /* Enable vertical scroll if content exceeds max-height */
+    padding-right: 5px; /* Extra space for scrollbar */
+}
+
+/* Optional: Style scrollbar (Chrome/Edge only) */
+.featured-prdct p::-webkit-scrollbar,
+.stuff p::-webkit-scrollbar {
+    width: 6px;
+}
+.featured-prdct p::-webkit-scrollbar-thumb,
+.stuff p::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
